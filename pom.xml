@@ -39,7 +39,7 @@
 
     <!-- == PROJECT METAINFORMATION ========================================= -->
     <name>PetrinetTests</name>
-    <!--url></url-->
+    <url/>
     <inceptionYear>2020</inceptionYear>
 
     <organization>
@@ -211,6 +211,12 @@
             <version>${monticore.version}</version>
             <classifier>${grammars.classifier}</classifier>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>de.monticore.lang</groupId>
+            <artifactId>petrinets</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <!-- .. Test Libraries ............................................... -->
