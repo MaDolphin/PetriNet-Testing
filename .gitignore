@@ -1,2 +1,10 @@
-/target/
-/.idea/
+*.iml
+.idea
+target/
+.DS_Store
+.classpath
+.project
+.settings/
+.vs
+.devcontainer
+SLE.code-workspace
