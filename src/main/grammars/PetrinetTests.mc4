@@ -1,7 +1,14 @@
 grammar PetrinetTests extends de.monticore.literals.MCCommonLiterals  {
+
+
+    // SyntaxSugar expecting list but have single element => single-element-list
+    // TestcaseBody in PetriNetTest / transition-name in Simulation
+    // ???
+
+
     //if test contains only testcasebody -> implicit testcase with Testcase.Name = Test.Name
-    symbol scope Test = "test" Name "{"
-        ModelDefinition
+    symbol scope PetriNetTest = "pntest" Name "{"
+        Import
         (TestcaseBody | Testcase+)
     "}";
 
@@ -9,40 +16,25 @@ grammar PetrinetTests extends de.monticore.literals.MCCommonLiterals  {
         TestcaseBody
     "}";
 
-    ModelDefinition = InlineDefinition | Import;
-    InlineDefinition = "petrinet" Name? "{" (Place | Transition)* "}";
-    symbol Place = "place" Name;
-    symbol Transition = "transition" Name;
     Import = "use" "petrinet" Name;
 
     TestcaseBody = InitialMarking Expectation* TestStep*;
-    TestStep = Progression Expectation+;
-    Progression = Simulation+ | Autotraversal;
-    //Simulation = "simulate" "{" (Name@Transition || ",")+ "}";
-    Simulation = "simulate" "{" Name@Transition ("," Name@Transition)* "}";
-    Autotraversal = "simulate" "auto" NoBacktracking?;
-    NoBacktracking = "no" "backtracking";
+    TestStep = Simulation+ Expectation+;
+    Simulation = "simulate" "{" (Name || ",")+ "}";
 
     InitialMarking = "initial" "marking" (InheritMarking | DefineMarking);
     InheritMarking = "inherited" RestSpecification?;
-    //DefineMarking = "{" (PlaceBinding || ",")* ("," RestSpecification? "}";
-    DefineMarking = "{"
-        (RestSpecification? |
-        PlaceBinding ("," PlaceBinding)* ("," RestSpecification)? )
-    "}";
-    PlaceBinding = place:Name@Place value:MarkingValue;
+    DefineMarking = "{" (PlaceBinding || ",")* ("," RestSpecification)? "}";
+    PlaceBinding = place:Name value:MarkingValue;
     RestSpecification = "rest" MarkingValue;
     MarkingValue = NatLiteral;
 
-    Expectation = "expect" (BooleanExpectation | Condition);
-    BooleanExpectation = Negation | Conjunction | Disjunction;
+    Expectation = "expect" Condition;
+    interface Condition;
+    BooleanCondition implements Condition = Negation | Conjunction | Disjunction;
     Negation = "not" Condition;
     Conjunction = "all" "{" (Condition || ",")* "}";
     Disjunction = "any" "{" (Condition || ",")* "}";
 
-    interface Condition;
-    //MarkingCondition implements Condition = "marking" "{" (PlaceBinding || ",")* "}";
-    MarkingCondition implements Condition = "marking" "{" (PlaceBinding ("," PlaceBinding)*)? "}";
-    TransitionCondition implements Condition = "transition" "{" (TransitionBinding ("," TransitionBinding)*)? "}";
-    TransitionBinding = transition:Name@Transition use:["used" | "unused"]*;
+    MarkingCondition implements Condition = "marking" "{" (PlaceBinding || ",")* "}";
 }
