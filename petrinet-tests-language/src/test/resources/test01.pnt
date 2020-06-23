@@ -1,0 +1,6 @@
+pntest HelloWorld {
+    use petrinet Test
+    testcase ATestCase {
+        initial marking inherited
+    }
+}
