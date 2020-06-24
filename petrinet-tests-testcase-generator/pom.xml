@@ -11,5 +11,13 @@
 
     <artifactId>petrinet-tests-testcase-generator</artifactId>
 
+    <name>PetrinetTests - Testcase Generator</name>
+    <dependencies>
+        <dependency>
+            <groupId>de.monticore.lang</groupId>
+            <artifactId>petrinets</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>

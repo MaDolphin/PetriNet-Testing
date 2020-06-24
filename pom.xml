@@ -12,6 +12,7 @@
         <module>petrinet-tests-language</module>
         <module>petrinet-tests-junit-generator</module>
         <module>petrinet-tests-simulator</module>
+        <module>petrinet4analysis</module>
     </modules>
 
     <properties>

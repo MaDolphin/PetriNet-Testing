@@ -127,6 +127,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>de.monticore.lang</groupId>
+            <artifactId>petrinet-tests-testcase-generator</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
             <version>${antlr.version}</version>
@@ -157,12 +163,6 @@
             <version>${monticore.version}</version>
             <classifier>${grammars.classifier}</classifier>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>de.monticore.lang</groupId>
-            <artifactId>petrinets</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <!-- .. Test Libraries ............................................... -->
