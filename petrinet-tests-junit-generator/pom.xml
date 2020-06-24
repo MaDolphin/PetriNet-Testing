@@ -12,5 +12,13 @@
     </parent>
     <artifactId>petrinet-tests-junit-generator</artifactId>
 
+    <name>PetrinetTests - Testcase Generator</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>de.monticore.lang</groupId>
+            <artifactId>petrinet-tests-language</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

@@ -1,0 +1,4 @@
+[submodule "petrinet4analysis"]
+	path = petrinet4analysis
+	url = ../petrinet4analysis.git
+	branch = master
