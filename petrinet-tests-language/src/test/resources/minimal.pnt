@@ -1,0 +1,4 @@
+pntest MinimalTest {
+    use petrinet minimal
+    initial marking inherited
+}
