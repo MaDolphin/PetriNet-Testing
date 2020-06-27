@@ -20,7 +20,7 @@
 
         <guava.version>23.0</guava.version>
         <jsr305.version>3.0.0</jsr305.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>5.6.2</junit.version>
         <logback.version>1.1.2</logback.version>
         <emf.common.version>2.5.0</emf.common.version>
         <emf.ecore.version>2.5.0</emf.ecore.version>
@@ -158,8 +158,8 @@
 
         <!-- .. Test Libraries ............................................... -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>

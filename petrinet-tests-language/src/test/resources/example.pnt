@@ -1,0 +1,68 @@
+pntest Example {
+    use petrinet Example
+
+    testcase Testcase1 {
+        initial marking {
+            Place1 5,
+            Place2 7,
+            Place6 0,
+            rest 1
+        }
+
+        expect marking {
+            Place4 1
+        }
+
+        simulate {
+            Transition5,
+            Transition5,
+            Transition2
+        }
+
+        simulate {
+            Transition1
+        }
+
+        expect marking {
+            Place3 9,
+            Place2 0
+        }
+
+        simulate {Transition4}  // Syntax Sugar: remove braces?
+
+        expect any {
+            marking {
+                Place1 1,
+                Place3 1
+            },
+            all {
+                marking {
+                    Place5 0,
+                    Place1 7
+                },
+                not marking {
+                    Place4 0
+                },
+                not all {
+                    marking {
+                        Place2 2
+                    },
+                    marking {
+                        Place3 3
+                    }
+                }
+            }
+        }
+    }
+
+    testcase Testcase2 {
+        initial marking inherited rest 2
+
+        simulate {Start}
+
+        expect marking {
+            End 5,
+            Start 1
+        }
+    }
+}
