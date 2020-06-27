@@ -12,7 +12,7 @@
     </parent>
     <artifactId>petrinet-tests-junit-generator</artifactId>
 
-    <name>PetrinetTests - Testcase Generator</name>
+    <name>PetrinetTests - JUnit Generator</name>
 
     <dependencies>
         <dependency>

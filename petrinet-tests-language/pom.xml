@@ -122,16 +122,7 @@
 
     </build>
 
-
-
-
     <dependencies>
-        <dependency>
-            <groupId>de.monticore.lang</groupId>
-            <artifactId>petrinet-tests-testcase-generator</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
