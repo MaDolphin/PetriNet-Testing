@@ -1,14 +1,13 @@
 package petrinettests.testcasegenerator;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 import java.util.Optional;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import petrinet._ast.ASTPetrinet;
 import petrinet._parser.PetrinetParser;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GeneratorTest {
 
