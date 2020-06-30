@@ -10,14 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ParserTest extends BaseTest{
     @Test
-    public void testHelloWorld() {
-        System.out.println("Hello, I'm running tests in maven");
-        assertTrue(true);
-    }
-
-    @Test
     public void testBasicParse() throws IOException {
-        Optional<ASTPetriNetTest> ast = parser.parse(modelPath.resolve("test01.pnt").toString());
+        Optional<ASTPetriNetTest> ast = parser.parse(modelPath.resolve("syntax-tests/parser/test01.pnt").toString());
         assertTrue(ast.isPresent());
     }
 }
