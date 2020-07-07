@@ -11,7 +11,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SimulatorTest {
+public class BasicGeneratorTest {
     @Test
     public void testBasicSim() throws IOException {
         PetrinetTestsParser parser = new PetrinetTestsParser();
