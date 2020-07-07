@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PrettyPrinterTest extends BaseTest{
+public class PrettyPrinterTest extends BaseTest {
 
   public static Stream<Path> allModels() throws Exception {
     return Files.walk(modelPath).filter(path -> path.toFile().getName().endsWith(".pnt"));
@@ -25,7 +25,7 @@ public class PrettyPrinterTest extends BaseTest{
   public void prettyPrintEqualsOriginalModel(Path model) throws Exception {
     Optional<ASTPetriNetTest> pnt = parser.parse(model.toString());
     // maybe there is a test for unparsable-models, ignore them
-    if(pnt.isEmpty()){
+    if (pnt.isEmpty()) {
       return;
     }
     String printResult = PetrinetTestPrettyprinter.print(pnt.get());
@@ -33,18 +33,19 @@ public class PrettyPrinterTest extends BaseTest{
     try {
       assertTrue(reparsed.isPresent());
       assertTrue(reparsed.get().deepEquals(pnt.get()));
-    }catch (AssertionError e){
+    }
+    catch (AssertionError e) {
       Log.getFindings().forEach(System.err::println);
       printWithLineNumbersToErr(printResult);
       throw e;
     }
   }
 
-  private void printWithLineNumbersToErr(String s){
+  private void printWithLineNumbersToErr(String s) {
     String[] lines = s.split("\\R");
-    int lineNumberFormatWidth = (int)Math.ceil(Math.log10(lines.length));
+    int lineNumberFormatWidth = (int) Math.ceil(Math.log10(lines.length));
     String formatString = String.format("%%%dd: %%s\n", lineNumberFormatWidth); // -> result something like this "%3d: %s<newline>"
-    for(int lineIdx = 0; lineIdx < lines.length; ++lineIdx){
+    for (int lineIdx = 0; lineIdx < lines.length; ++lineIdx) {
       System.err.printf(formatString, lineIdx + 1, lines[lineIdx]);
     }
   }

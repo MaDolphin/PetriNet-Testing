@@ -14,8 +14,8 @@ public class BaseTest {
 
   @BeforeAll
   public static void init() {
-      // replacing log by a side effect free variant
-      LogStub.init();
-      Log.enableFailQuick(false);
-    }
+    // replacing log by a side effect free variant
+    LogStub.init();
+    Log.enableFailQuick(false);
+  }
 }

@@ -13,7 +13,7 @@ public class PetrinetTestPrettyprinter extends IndentPrinter implements Petrinet
   }
 
   @Nonnull
-  public static String print(@Nonnull ASTPetriNetTest test){
+  public static String print(@Nonnull ASTPetriNetTest test) {
     PetrinetTestPrettyprinter prettyprinter = new PetrinetTestPrettyprinter(4);
     test.accept(prettyprinter);
     return prettyprinter.getContent();
@@ -89,21 +89,22 @@ public class PetrinetTestPrettyprinter extends IndentPrinter implements Petrinet
   public void handle(ASTDefineMarking node) {
     getRealThis().visit(node);
     boolean first = true;
-    for(ASTPlaceBinding binding : node.getPlaceBindingList()){
-      if(first){
+    for (ASTPlaceBinding binding : node.getPlaceBindingList()) {
+      if (first) {
         first = false;
-      } else {
+      }
+      else {
         println(",");
       }
       binding.accept(getRealThis());
     }
-    if(node.isPresentRestSpecification()){
-      if(!first){
+    if (node.isPresentRestSpecification()) {
+      if (!first) {
         println(",");
       }
       node.getRestSpecification().accept(getRealThis());
     }
-    if(!first){
+    if (!first) {
       println();
     }
     getRealThis().endVisit(node);
@@ -136,15 +137,16 @@ public class PetrinetTestPrettyprinter extends IndentPrinter implements Petrinet
     println("simulate {");
     indent();
     boolean first = true;
-    for(String name : node.getNameList()){
-      if(first){
+    for (String name : node.getNameList()) {
+      if (first) {
         first = false;
-      }else{
+      }
+      else {
         println(",");
       }
       print(name);
     }
-    if(!first){
+    if (!first) {
       println();
     }
     unindent();
@@ -166,15 +168,16 @@ public class PetrinetTestPrettyprinter extends IndentPrinter implements Petrinet
   public void handle(ASTConjunction node) {
     getRealThis().visit(node);
     boolean first = true;
-    for(ASTCondition condition : node.getConditionList()){
-      if(first){
+    for (ASTCondition condition : node.getConditionList()) {
+      if (first) {
         first = false;
-      }else{
+      }
+      else {
         println(",");
       }
       condition.accept(getRealThis());
     }
-    if(!first){
+    if (!first) {
       println();
     }
     getRealThis().endVisit(node);
@@ -196,15 +199,16 @@ public class PetrinetTestPrettyprinter extends IndentPrinter implements Petrinet
   public void handle(ASTDisjunction node) {
     getRealThis().visit(node);
     boolean first = true;
-    for(ASTCondition condition : node.getConditionList()){
-      if(first){
+    for (ASTCondition condition : node.getConditionList()) {
+      if (first) {
         first = false;
-      }else{
+      }
+      else {
         println(",");
       }
       condition.accept(getRealThis());
     }
-    if(!first){
+    if (!first) {
       println();
     }
     getRealThis().endVisit(node);
@@ -226,15 +230,16 @@ public class PetrinetTestPrettyprinter extends IndentPrinter implements Petrinet
   public void handle(ASTMarkingCondition node) {
     getRealThis().visit(node);
     boolean first = true;
-    for(ASTPlaceBinding binding : node.getPlaceBindingList()){
-      if(first){
+    for (ASTPlaceBinding binding : node.getPlaceBindingList()) {
+      if (first) {
         first = false;
-      } else {
+      }
+      else {
         println(",");
       }
       binding.accept(getRealThis());
     }
-    if(!first){
+    if (!first) {
       println();
     }
     getRealThis().endVisit(node);
