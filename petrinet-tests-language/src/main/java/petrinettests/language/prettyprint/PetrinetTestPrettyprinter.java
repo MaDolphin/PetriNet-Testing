@@ -1,6 +1,5 @@
 package petrinettests.language.prettyprint;
 
-import de.monticore.ast.ASTNode;
 import de.monticore.prettyprint.CommentPrettyPrinter;
 import de.monticore.prettyprint.IndentPrinter;
 import petrinettests._ast.*;
