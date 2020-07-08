@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ParserTest extends BaseTest {
   @Test
   public void testBasicParse() throws IOException {
-    Optional<ASTPetriNetTest> ast = parser.parse(modelPath.resolve("syntax-tests/parser/test01.pnt").toString());
+    Optional<ASTPetriNetTest> ast = parser.parse(modelPath.resolve("parser/test01.pnt").toString());
     assertTrue(ast.isPresent());
   }
 }

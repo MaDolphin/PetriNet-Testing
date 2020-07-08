@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class BaseTest {
-  protected static final Path modelPath = Paths.get("src/test/resources/");
+  protected static final Path modelPath = Paths.get("src/test/resources/language");
   protected PetrinetTestsParser parser = new PetrinetTestsParser();
 
   @BeforeAll

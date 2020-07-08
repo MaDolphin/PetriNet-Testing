@@ -17,7 +17,7 @@ public class SimulatorTest {
   @Test
   public void testBasicSim() throws IOException {
     PetrinetParser parser = new PetrinetParser();
-    Optional<ASTPetrinet> ast = parser.parse("src/test/resources/CookieMachine_modified.pn");
+    Optional<ASTPetrinet> ast = parser.parse("src/test/resources/simulator/CookieMachine_modified.pn");
     assertTrue(ast.isPresent());
     ASTPetrinet petrinet = ast.get();
 
@@ -48,7 +48,7 @@ public class SimulatorTest {
   @Test
   public void testTransitionNotEnabled() throws IOException {
     PetrinetParser parser = new PetrinetParser();
-    Optional<ASTPetrinet> ast = parser.parse("src/test/resources/CookieMachine_modified.pn");
+    Optional<ASTPetrinet> ast = parser.parse("src/test/resources/simulator/CookieMachine_modified.pn");
     assertTrue(ast.isPresent());
     ASTPetrinet petrinet = ast.get();
 

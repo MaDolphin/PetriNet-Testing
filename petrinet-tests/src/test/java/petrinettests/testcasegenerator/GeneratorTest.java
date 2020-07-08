@@ -15,7 +15,7 @@ public class GeneratorTest {
     public void testLoadPetrinet() throws IOException {
         PetrinetParser parser = new PetrinetParser();
 
-        Optional<ASTPetrinet> oPetrinet = parser.parse("src/test/resources/ExampleNet.pn");
+        Optional<ASTPetrinet> oPetrinet = parser.parse("src/test/resources/testcasegenerator/ExampleNet.pn");
 
         assertTrue(oPetrinet.isPresent());
         System.out.print(oPetrinet.get().getName());

@@ -13,7 +13,7 @@ public class BasicGeneratorTest {
   @Test
   public void testBasicSim() throws IOException {
     PetrinetTestsParser parser = new PetrinetTestsParser();
-    Optional<ASTPetriNetTest> ast = parser.parse("src/test/resources/test01.pnt");
+    Optional<ASTPetriNetTest> ast = parser.parse("src/test/resources/junitgenerator/test01.pnt");
     assertTrue(ast.isPresent());
     ASTPetriNetTest test = ast.get();
 
@@ -23,7 +23,7 @@ public class BasicGeneratorTest {
   @Test
   public void testDefinedMarkingWithRest() throws IOException {
     PetrinetTestsParser parser = new PetrinetTestsParser();
-    Optional<ASTPetriNetTest> ast = parser.parse("src/test/resources/test02.pnt");
+    Optional<ASTPetriNetTest> ast = parser.parse("src/test/resources/junitgenerator/test02.pnt");
     assertTrue(ast.isPresent());
     ASTPetriNetTest test = ast.get();
 
