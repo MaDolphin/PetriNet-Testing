@@ -11,20 +11,21 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>petrinet-tests-language</artifactId>
+    <artifactId>petrinet-tests</artifactId>
 
     <properties>
         <!-- .. Libraries ..................................................... -->
-        <monticore.version>6.0.0</monticore.version>
+        <petrinet4analysis.version>0.0.2-SNAPSHOT</petrinet4analysis.version>
+        <monticore.version>6.1.0</monticore.version>
         <antlr.version>4.7.1</antlr.version>
-
+        
 
         <!-- .. Classifiers ................................................... -->
         <grammars.classifier>grammars</grammars.classifier>
     </properties>
 
     <!-- == PROJECT METAINFORMATION ========================================= -->
-    <name>PetrinetTests - Language</name>
+    <name>PetrinetTests</name>
 
 
     <build>
@@ -163,6 +164,12 @@
             <version>${monticore.version}</version>
             <classifier>${grammars.classifier}</classifier>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>de.monticore.lang</groupId>
+            <artifactId>petrinets</artifactId>
+            <version>${petrinet4analysis.version}</version>
         </dependency>
 
         <!-- .. Test Libraries ............................................... -->

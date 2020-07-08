@@ -8,11 +8,8 @@
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <modules>
-        <module>petrinet-tests-testcase-generator</module>
-        <module>petrinet-tests-language</module>
-        <module>petrinet-tests-junit-generator</module>
-        <module>petrinet-tests-simulator</module>
         <module>petrinet4analysis</module>
+        <module>petrinet-tests</module>
     </modules>
 
     <properties>
