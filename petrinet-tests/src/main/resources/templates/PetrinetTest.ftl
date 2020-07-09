@@ -1,5 +1,5 @@
 <#import "macros.ftl" as macros/>
-package petrinettests.simulator; //TODO: package?
+package petrinettests.generated;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,6 +8,7 @@ import petrinet._ast.ASTPetrinet;
 import petrinet._parser.PetrinetParser;
 import petrinet.analysis.Marking;
 import petrinet.analysis.TokenCount;
+import petrinettests.simulator.Simulator;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -23,7 +24,7 @@ public class ${ast.name} {
     public void prepareSimulator() throws IOException {
         PetrinetParser parser = new PetrinetParser();
         <#-- TODO Path / Find recursively in folder -->
-        petrinet = parser.parse("src/test/resources/${import}.pn").orElseGet(() -> {
+        petrinet = parser.parse("/Users/stocc/git/sle/project/petrinet-testing/petrinet-tests-generator/src/main/resources/${import}.pn").orElseGet(() -> {
             fail("Model path not found");
             return null;
         });

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <properties>
+        <!-- .. Libraries ..................................................... -->
+        <petrinet4analysis.version>0.0.2-SNAPSHOT</petrinet4analysis.version>
+        <monticore.version>6.1.0</monticore.version>
+        <antlr.version>4.7.1</antlr.version>
+        <logback.version>1.2.3</logback.version>
+        <petrinet4analysis.version>0.0.2-SNAPSHOT</petrinet4analysis.version>
+
+        <!-- .. Classifiers ................................................... -->
+        <grammars.classifier>grammars</grammars.classifier>
+    </properties>
+
+    <!-- == PROJECT COORDINATES ============================================= -->
+    <parent>
+        <artifactId>petrinet-tests-parent</artifactId>
+        <groupId>de.monticore.lang</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>petrinet-tests-generator</artifactId>
+
+    <name>PetrinetTests - Testcase Generator</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>de.monticore.lang</groupId>
+            <artifactId>petrinet-tests</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>de.monticore</groupId>
+            <artifactId>monticore-runtime</artifactId>
+            <version>${monticore.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+          </dependency>
+      
+          <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+          </dependency>
+
+          <dependency>
+            <groupId>de.monticore.lang</groupId>
+            <artifactId>petrinets</artifactId>
+            <version>${petrinet4analysis.version}</version>
+        </dependency>
+
+    </dependencies>
+
+
+    <build>
+      <plugins>
+
+        <!-- Step 1: Run testcase generation and save to target/generated-test-sources -->
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.1</version>
+            <executions>
+              <execution>
+                <id>generate-tests</id>
+                <phase>generate-test-sources</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <mainClass>petrinettests.PetrinetTestsTool</mainClass>
+              <arguments>
+                  <!-- TODO: Use pn models and generate tests from them (not pnt models) -->
+                  <argument>--generate-dir</argument>
+                  <argument>${basedir}/src/main/resources</argument>
+                  <argument>${project.build.directory}/generated-test-sources/petrinettests/petrinettests/generated</argument>
+              </arguments>
+            </configuration>
+          </plugin>
+
+        <!-- Step 2: Mark target/generated-test-sources as test sources -->
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <version>3.2.0</version>
+            <executions>
+              <execution>
+                <id>add-test-sources</id>
+                <phase>generate-test-sources</phase>
+                <goals>
+                  <goal>add-test-source</goal>
+                </goals>
+                <configuration>
+                  <sources>
+                    <source>${project.build.directory}/generated-test-sources/petrinettests</source>
+                  </sources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          
+      </plugins>
+    </build>
+</project>

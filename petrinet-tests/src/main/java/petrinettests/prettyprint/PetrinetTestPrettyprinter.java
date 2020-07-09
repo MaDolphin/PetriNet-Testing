@@ -1,4 +1,4 @@
-package petrinettests.language.prettyprint;
+package petrinettests.prettyprint;
 
 import de.monticore.prettyprint.CommentPrettyPrinter;
 import de.monticore.prettyprint.IndentPrinter;

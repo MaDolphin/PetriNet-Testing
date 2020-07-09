@@ -5,6 +5,7 @@ import de.monticore.generating.GeneratorSetup;
 import petrinettests._ast.ASTPetriNetTest;
 import petrinettests._parser.PetrinetTestsParser;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Optional;
@@ -26,9 +27,14 @@ public class JUnitGenerator {
   }
 
   public static void generateJUnit(ASTPetriNetTest ast) {
+    generateJUnit(ast, "out");
+  }
+
+  public static void generateJUnit(ASTPetriNetTest ast, String outputPath) {
     GeneratorSetup setup = new GeneratorSetup();
     setup.setCommentStart("//");
     setup.setCommentEnd("");
+    setup.setOutputDirectory(new File(outputPath));
 
     GeneratorEngine engine = new GeneratorEngine(setup);
     engine.generate("templates/PetrinetTest.ftl", Paths.get(ast.getName() + ".java"), ast);

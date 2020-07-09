@@ -52,6 +52,10 @@ public class Simulator {
     return currentMarking;
   }
 
+  public void setCurrentMarking(Marking currentMarking) {
+    this.currentMarking = currentMarking;
+  }
+
   /**
    * TODO
    *

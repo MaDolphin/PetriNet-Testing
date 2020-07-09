@@ -4,7 +4,7 @@ import de.se_rwth.commons.logging.Log;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import petrinettests._ast.ASTPetriNetTest;
-import petrinettests.language.prettyprint.PetrinetTestPrettyprinter;
+import petrinettests.prettyprint.PetrinetTestPrettyprinter;
 
 import java.io.StringReader;
 import java.nio.file.Files;
