@@ -8,11 +8,9 @@
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <modules>
-        <module>petrinet-tests-testcase-generator</module>
-        <module>petrinet-tests-language</module>
-        <module>petrinet-tests-junit-generator</module>
-        <module>petrinet-tests-simulator</module>
         <module>petrinet4analysis</module>
+        <module>petrinet-tests</module>
+        <module>petrinet-tests-generator</module>
     </modules>
 
     <properties>
@@ -107,7 +105,7 @@
             </plugin>
 
             <!--TODO: Assembly with full jar-->
-            <!--<plugin>
+            <!-- <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>${assembly.plugin}</version>
@@ -135,8 +133,8 @@
                             <goal>single</goal>
                         </goals>
                     </execution>
-                </executions>
-            </plugin>-->
+                </executions> 
+            </plugin> -->
         </plugins>
 
     </build>

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- == PROJECT COORDINATES ============================================= -->
+    <parent>
+        <artifactId>petrinet-tests-parent</artifactId>
+        <groupId>de.monticore.lang</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>petrinet-tests</artifactId>
+
+    <properties>
+        <!-- .. Libraries ..................................................... -->
+        <petrinet4analysis.version>0.0.2-SNAPSHOT</petrinet4analysis.version>
+        <monticore.version>6.1.0</monticore.version>
+        <antlr.version>4.7.1</antlr.version>
+        <logback.version>1.2.3</logback.version>
+
+        <!-- .. Classifiers ................................................... -->
+        <grammars.classifier>grammars</grammars.classifier>
+    </properties>
+
+    <!-- == PROJECT METAINFORMATION ========================================= -->
+    <name>PetrinetTests</name>
+
+
+    <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav-jackrabbit</artifactId>
+                <version>${wagon.provider.version}</version>
+            </extension>
+        </extensions>
+
+        <plugins>
+            <!-- MontiCore Generation -->
+            <plugin>
+                <groupId>de.monticore.mojo</groupId>
+                <artifactId>monticore-maven-plugin</artifactId>
+                <version>${monticore.version}</version>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <script>de/monticore/monticore_noemf.groovy</script>
+                            <!--<script>${basedir}/src/main/resources/nosymtab.groovy</script>-->
+                        </configuration>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Other Configuration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.plugin}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire.plugin}</version>
+                <configuration>
+                    <classpathDependencyExcludes>
+                        <classpathDependencyExclude>de.monticore:monticore-cli</classpathDependencyExclude>
+                    </classpathDependencyExcludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${release.plugin}</version>
+                <configuration>
+                    <tagNameFormat>${project.artifactId}-@{project.version}</tagNameFormat>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${source.plugin}</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${assembly.plugin}</version>
+                <configuration>
+                  <archive>
+                    <manifest>
+                      <mainClass>petrinettests.PetrinetTestsTool</mainClass>
+                    </manifest>
+                  </archive>
+                  <descriptorRefs>
+                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                  </descriptorRefs>
+                </configuration>
+                <executions>
+                  <execution>
+                    <configuration>
+                      <formats>
+                        <format>jar</format>
+                      </formats>
+                    </configuration>
+                    <id>petrinettests-assembly</id>
+                    <phase>package</phase>
+                    <goals>
+                      <goal>single</goal>
+                    </goals>
+                  </execution>
+                </executions>
+              </plugin>
+            </plugins>
+
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>${antlr.version}</version>
+        </dependency>
+
+        <!-- MontiCore Dependencies -->
+        <dependency>
+            <groupId>de.monticore</groupId>
+            <artifactId>monticore-generator</artifactId>
+            <version>${monticore.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>de.monticore</groupId>
+            <artifactId>monticore-runtime</artifactId>
+            <version>${monticore.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>de.monticore</groupId>
+            <artifactId>monticore-grammar</artifactId>
+            <version>${monticore.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>de.monticore</groupId>
+            <artifactId>monticore-grammar</artifactId>
+            <version>${monticore.version}</version>
+            <classifier>${grammars.classifier}</classifier>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>de.monticore.lang</groupId>
+            <artifactId>petrinets</artifactId>
+            <version>${petrinet4analysis.version}</version>
+        </dependency>
+
+        <!-- .. Test Libraries ............................................... -->
+        <dependency>
+            <groupId>de.monticore</groupId>
+            <artifactId>monticore-runtime</artifactId>
+            <version>${monticore.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>de.monticore.mojo</groupId>
+                <artifactId>monticore-maven-plugin</artifactId>
+                <version>${monticore.version}</version>
+                <inherited>false</inherited>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>reporting-report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
+</project>
