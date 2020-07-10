@@ -1,21 +1,19 @@
 package petrinettests;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import de.se_rwth.commons.logging.Log;
+import org.apache.commons.io.FileUtils;
+import org.slf4j.LoggerFactory;
+import petrinettests._ast.ASTPetriNetTest;
+import petrinettests._parser.PetrinetTestsParser;
+import petrinettests.junitgenerator.JUnitGenerator;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
-
-import org.apache.commons.io.FileUtils;
-import org.slf4j.LoggerFactory;
-
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
-
-import de.se_rwth.commons.logging.Log;
-import petrinettests._ast.ASTPetriNetTest;
-import petrinettests._parser.PetrinetTestsParser;
-import petrinettests.junitgenerator.JUnitGenerator;
 
 public class PetrinetTestsTool {
   public static void main(String[] args) {

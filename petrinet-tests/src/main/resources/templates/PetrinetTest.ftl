@@ -9,6 +9,7 @@ import petrinet._parser.PetrinetParser;
 import petrinet.analysis.Marking;
 import petrinet.analysis.TokenCount;
 import petrinettests.simulator.Simulator;
+import petrinettests.simulator.resolver.PetrinetResolverFactory;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -23,8 +24,7 @@ public class ${ast.name} {
     @BeforeEach
     public void prepareSimulator() throws IOException {
         PetrinetParser parser = new PetrinetParser();
-        <#-- TODO Path / Find recursively in folder -->
-        petrinet = parser.parse("/Users/stocc/git/sle/project/petrinet-testing/petrinet-tests-generator/src/main/resources/${import}.pn").orElseGet(() -> {
+        petrinet = PetrinetResolverFactory.getResolver().resolve(parser, ${import}).orElseGet(() -> {
             fail("Model path not found");
             return null;
         });
