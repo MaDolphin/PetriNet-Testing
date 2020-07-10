@@ -98,12 +98,6 @@ public class PetrinetTestPrettyprinter extends IndentPrinter implements Petrinet
       }
       binding.accept(getRealThis());
     }
-    if (node.isPresentRestSpecification()) {
-      if (!first) {
-        println(",");
-      }
-      node.getRestSpecification().accept(getRealThis());
-    }
     if (!first) {
       println();
     }
@@ -125,11 +119,6 @@ public class PetrinetTestPrettyprinter extends IndentPrinter implements Petrinet
   @Override
   public void visit(ASTMarkingValue node) {
     print(node.getNatLiteral().getValue());
-  }
-
-  @Override
-  public void visit(ASTRestSpecification node) {
-    print("rest ");
   }
 
   @Override

@@ -69,22 +69,4 @@ public class ${ast.name} {
         initialMarking.set(placeName, count);
         sim.setCurrentMarking(initialMarking);
     }
-
-    private void clearAllTokens() {
-        applyRest(0);
-    }
-
-    private void applyRest(int tokenCount) {
-        Marking initialMarking = sim.getCurrentMarking();
-        for (String key : initialMarking.keys()) {
-            TokenCount count = initialMarking.get(key);
-            if (count.compareTo(0) > 0) {
-                continue;
-            }
-
-            count.add(tokenCount);
-            initialMarking.set(key, count);
-        }
-        sim.setCurrentMarking(initialMarking);
-    }
 }

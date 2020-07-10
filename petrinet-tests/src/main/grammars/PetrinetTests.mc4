@@ -23,10 +23,9 @@ grammar PetrinetTests extends de.monticore.literals.MCCommonLiterals  {
     Simulation = "simulate" "{" (Name || ",")+ "}";
 
     InitialMarking = "initial" "marking" (InheritMarking | DefineMarking);
-    InheritMarking = "inherited" RestSpecification?;
-    DefineMarking = "{" (PlaceBinding || ",")* ("," RestSpecification)? "}";
+    InheritMarking = "inherited";
+    DefineMarking = "{" (PlaceBinding || ",")* "}";
     PlaceBinding = place:Name value:MarkingValue;
-    RestSpecification = "rest" MarkingValue;
     MarkingValue = NatLiteral;
 
     Expectation = "expect" Condition;
