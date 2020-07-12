@@ -26,7 +26,7 @@ public class ${ast.name} {
     public void setUp() throws IOException {
         PetrinetParser parser = new PetrinetParser();
         <#-- TODO Path / Find recursively in folder -->
-        petrinet = parser.parse("/Users/stocc/git/sle/project/petrinet-testing/petrinet-tests-generator/src/main/resources/${import}.pn").orElseGet(() -> {
+        petrinet = parser.parse("src/main/resources/${import}.pn").orElseGet(() -> {
             fail("Model path not found");
             return null;
         });
