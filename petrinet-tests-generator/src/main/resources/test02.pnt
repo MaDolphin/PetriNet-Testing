@@ -3,19 +3,22 @@ pntest Test02 {
     testcase ATestCase {
         initial marking {
             Keksspeicher 4,
-            Einwurfschlitz 0,
-            rest 10
+            Einwurfschlitz 1,
+            KeinSignal 1,
+            Strom 1
         }
 
         expect all {
             marking {
                 Keksspeicher 4,
-                Einwurfschlitz 0
+                Einwurfschlitz 1
+            },
+            not enabled {
+                MuenzeEinwerfen
             }
         }
 
         simulate {
-            MuenzeEinwerfen,
             MuenzeAkzeptieren,
             KeksDruecken,
             KekseAusgeben,

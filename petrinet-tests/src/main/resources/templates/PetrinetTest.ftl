@@ -23,7 +23,7 @@ public class ${ast.name} {
     Simulator sim;
 
     @BeforeEach
-    public void prepareSimulator() throws IOException {
+    public void setUp() throws IOException {
         PetrinetParser parser = new PetrinetParser();
         <#-- TODO Path / Find recursively in folder -->
         petrinet = parser.parse("/Users/stocc/git/sle/project/petrinet-testing/petrinet-tests-generator/src/main/resources/${import}.pn").orElseGet(() -> {
@@ -100,7 +100,12 @@ public class ${ast.name} {
     }
 
     private void clearAllTokens() {
-        applyRest(0);
+        Marking initialMarking = sim.getCurrentMarking();
+        for (String key : initialMarking.keys()) {
+            TokenCount count = new TokenCount(0);
+            initialMarking.set(key, count);
+        }
+        sim.setCurrentMarking(initialMarking);
     }
 
     private void applyRest(int tokenCount) {
