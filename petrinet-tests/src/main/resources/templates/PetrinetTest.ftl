@@ -5,13 +5,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import petrinet._ast.ASTPetrinet;
+import petrinet._ast.ASTTransition;
 import petrinet._parser.PetrinetParser;
 import petrinet.analysis.Marking;
 import petrinet.analysis.TokenCount;
 import petrinettests.simulator.Simulator;
 
 import java.io.IOException;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -59,8 +61,35 @@ public class ${ast.name} {
         assertDoesNotThrow(() -> sim.simulateTransition(transitionName));
     }
 
-    private void assertMarking(String placeName, int tokenCount) {
-        assertEquals(0, sim.getCurrentMarking().get(placeName).compareTo(tokenCount));
+    private boolean any(boolean... conditions) {
+        List<Boolean> conditionsList = new ArrayList<>();
+        for (boolean c: conditions) {
+            conditionsList.add(c);
+        }
+
+        return conditionsList.stream().anyMatch(b -> b);
+        
+    }
+
+    private boolean all(boolean... conditions) {
+        List<Boolean> conditionsList = new ArrayList<>();
+        for (boolean c: conditions) {
+            conditionsList.add(c);
+        }
+
+        return conditionsList.stream().allMatch(b -> b);
+    }
+
+    private boolean checkMarking(String placeName, int tokenCount) {
+        return 0 == sim.getCurrentMarking().get(placeName).compareTo(tokenCount);
+    }
+
+    private boolean checkEnabled(String transitionName) {
+        return sim.getCurrentMarking().enabled(findTransitionByName(transitionName));   
+    }
+
+    private ASTTransition findTransitionByName(String name) {
+        return petrinet.getTransitionList().stream().filter(t -> t.getName().equals(name)).findAny().orElseThrow();
     }
 
     private void setTokens(String placeName, int tokenCount) {

@@ -30,4 +30,14 @@ public class BasicGeneratorTest {
     JUnitGenerator.generateJUnit(test);
   }
 
+  @Test
+  public void testExpectations() throws IOException {
+    PetrinetTestsParser parser = new PetrinetTestsParser();
+    Optional<ASTPetriNetTest> ast = parser.parse("src/test/resources/junitgenerator/test03.pnt");
+    assertTrue(ast.isPresent());
+    ASTPetriNetTest test = ast.get();
+
+    JUnitGenerator.generateJUnit(test);
+  }
+
 }
