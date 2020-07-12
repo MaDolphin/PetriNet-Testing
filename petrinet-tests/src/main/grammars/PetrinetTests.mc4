@@ -31,10 +31,13 @@ grammar PetrinetTests extends de.monticore.literals.MCCommonLiterals  {
 
     Expectation = "expect" Condition;
     interface Condition;
-    BooleanCondition implements Condition = Negation | Conjunction | Disjunction;
-    Negation = "not" Condition;
-    Conjunction = "all" "{" (Condition || ",")* "}";
-    Disjunction = "any" "{" (Condition || ",")* "}";
+    astrule Condition = method Optional<Boolean> verify(petrinet._ast.ASTPetrinet petrinet, petrinet.analysis.Marking marking) { };
+    interface BooleanCondition extends Condition; //= Negation | Conjunction | Disjunction;
+    Negation implements BooleanCondition = "not" Condition;
+    Conjunction implements BooleanCondition = "all" "{" (Condition || ",")* "}";
+    Disjunction implements BooleanCondition = "any" "{" (Condition || ",")* "}";
 
     MarkingCondition implements Condition = "marking" "{" (PlaceBinding || ",")* "}";
+    EnabledCondition implements Condition = "enabled" "{" (Name || ",")* "}";
+
 }
