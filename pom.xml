@@ -112,7 +112,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>petrinettest.PetrinetTestsTool</mainClass>
+                            <mainClass>petrinettests.PetrinetTestsTool</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

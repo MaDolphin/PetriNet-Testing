@@ -1,0 +1,31 @@
+pntest OneForEachTransition_OneForEachTransition_test {
+    use petrinet OneForEachTransition
+
+    testcase First_TransitionTest {
+        initial marking {
+            Foo 2
+        }
+
+        simulate {
+            First
+        }
+
+        expect marking {
+            Bar 7
+        }
+    }
+
+    testcase Second_TransitionTest {
+        initial marking {
+            Foo 3
+        }
+
+        simulate {
+            Second
+        }
+
+        expect marking {
+            Foo 5
+        }
+    }
+}

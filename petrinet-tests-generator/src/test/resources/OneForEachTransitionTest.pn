@@ -1,0 +1,13 @@
+petrinet OneForEachTransition {
+
+    place Foo;
+    place Bar;
+
+    transition First:
+        2 <- Foo
+        7 -> Bar
+
+    transition Second:
+        3 <- Foo
+        5 -> Foo
+}
