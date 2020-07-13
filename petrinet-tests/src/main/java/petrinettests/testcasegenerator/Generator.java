@@ -101,15 +101,15 @@ public class Generator{
     ASTPetriNetTest finalPetriNetTest = new ASTPetriNetTest();
 
     testcaseTable.entrySet().forEach(entry->{
+      System.out.println("Transition: "+entry.getValue().getName());
       entry.getKey().entrySet().forEach(e->{
         for (ASTPlace p : e.getKey()){
           System.out.println("FromPlace: "+p.getName());
         }
         for (ASTPlace p_value : e.getValue()){
-          System.out.println(p_value.getName());
+          System.out.println("ToPlace: "+p_value.getName());
         }
       });
-      System.out.println("Transition: "+entry.getValue().getName());
       System.out.println();
       System.out.println();
     });
