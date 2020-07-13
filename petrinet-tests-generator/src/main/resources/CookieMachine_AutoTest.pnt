@@ -1,0 +1,57 @@
+pntest CookieMachine_AutoTest { 
+    use petrinet CookieMachine_modified
+
+    testcase KeksGeben_TransitionTest {
+        initial marking {
+            KeksZaehler 1,
+            Keksspeicher 1,
+            KeinSignal 1,
+            Strom 1
+        }
+        simulate {
+            KeksGeben
+        }
+        expect marking {
+            KeinSignal 1,
+            Entnahmefach 1,
+            Strom 1
+        }
+    }
+    testcase MuenzeAkzeptieren_TransitionTest {
+        initial marking {
+            KeinSignal 1,
+            Einwurfschlitz 1
+        }
+        simulate {
+            MuenzeAkzeptieren
+        }
+        expect marking {
+            Kasse 1,
+            Signal 1
+        }
+    }
+    testcase KeksDruecken_TransitionTest {
+        initial marking {
+            Signal 1
+        }
+        simulate {
+            KeksDruecken
+        }
+        expect marking {
+            KeksZaehler 1,
+            Signal 1
+        }
+    }
+    testcase KekseAusgeben_TransitionTest {
+        initial marking {
+            Signal 1
+        }
+        simulate {
+            KekseAusgeben
+        }
+        expect marking {
+            KeinSignal 1,
+            EinwurfMoeglich 1
+        }
+    }
+}
