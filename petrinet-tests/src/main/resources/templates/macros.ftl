@@ -10,6 +10,7 @@
         // Using inherited initial marking
 </#macro>
 <#macro defined defineMarking>
+    clearAllTokens();
     <#list defineMarking.placeBindingList as placeBinding>
         setTokens("${placeBinding.place}", ${placeBinding.value.natLiteral.value});
     </#list>

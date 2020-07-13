@@ -9,10 +9,10 @@ import petrinet._parser.PetrinetParser;
 import petrinet.analysis.Marking;
 import petrinet.analysis.TokenCount;
 import petrinettests.simulator.Simulator;
+import petrinettests.simulator.resolver.PetrinetResolverFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,7 +24,7 @@ public class ${ast.name} {
     @BeforeEach
     public void setUp() throws IOException {
         PetrinetParser parser = new PetrinetParser();
-        petrinet = PetrinetResolverFactory.getResolver().resolve(parser, ${import}).orElseGet(() -> {
+        petrinet = PetrinetResolverFactory.getResolver().resolve(parser, "${import}").orElseGet(() -> {
             fail("Model path not found");
             return null;
         });
@@ -100,22 +100,7 @@ public class ${ast.name} {
     private void clearAllTokens() {
         Marking initialMarking = sim.getCurrentMarking();
         for (String key : initialMarking.keys()) {
-            TokenCount count = new TokenCount(0);
-            initialMarking.set(key, count);
-        }
-        sim.setCurrentMarking(initialMarking);
-    }
-
-    private void applyRest(int tokenCount) {
-        Marking initialMarking = sim.getCurrentMarking();
-        for (String key : initialMarking.keys()) {
-            TokenCount count = initialMarking.get(key);
-            if (count.compareTo(0) > 0) {
-                continue;
-            }
-
-            count.add(tokenCount);
-            initialMarking.set(key, count);
+            initialMarking.set(key, new TokenCount(0));
         }
         sim.setCurrentMarking(initialMarking);
     }
