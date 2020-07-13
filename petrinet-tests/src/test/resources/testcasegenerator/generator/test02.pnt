@@ -1,0 +1,35 @@
+pntest Test02 {
+    use petrinet CookieMachine_modified
+    testcase ATestCase {
+        initial marking {
+            Keksspeicher 10,
+            EinwurfMoeglich 2,
+            KeinSignal 1,
+            rest 10
+        }
+
+        expect all {
+            marking {
+                Keksspeicher 4,
+                Einwurfschlitz 0
+            }
+        }
+
+        simulate {
+            MuenzeEinwerfen,
+            MuenzeAkzeptieren,
+            KeksDruecken,
+            KekseAusgeben,
+            KeksGeben,
+            SchachtelEntnehmen
+        }
+
+        expect all {
+            marking {
+                Keksspeicher 3,
+                Einwurfschlitz 0
+            }
+        }
+
+    }
+}
