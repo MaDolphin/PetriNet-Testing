@@ -3,15 +3,14 @@ package petrinettests.testcasegenerator;
 import de.monticore.io.paths.ModelPath;
 import de.monticore.literals.mccommonliterals._ast.ASTNatLiteral;
 import de.monticore.literals.mccommonliterals._ast.ASTNatLiteralBuilder;
-import petrinet._ast.ASTPetrinet;
-import petrinet._ast.ASTPlace;
-import petrinet._ast.ASTTransition;
+import petrinet._ast.*;
 import petrinet._cocos.PetrinetCoCoChecker;
 import petrinet._symboltable.PetrinetGlobalScope;
 import petrinet._symboltable.PetrinetLanguage;
 import petrinet._symboltable.PetrinetSymbolTableCreatorDelegator;
 import petrinet.analysis.CoverabilityTree;
 import petrinet.cocos.PetrinetCoCos;
+import petrinettests.PetrinetTestsMill;
 import petrinettests._ast.*;
 import petrinettests._visitor.PetrinetTestsDelegatorVisitor;
 import petrinettests._visitor.PetrinetTestsVisitor;
@@ -19,15 +18,16 @@ import petrinettests.simulator.Simulator;
 import petrinettests.simulator.TransitionNotEnabledException;
 import petrinettests.simulator.TransitionNotFoundException;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 
 public class Generator{
 
-  public ASTPetriNetTest getAllTestcase(ASTPetrinet petrinet) throws TransitionNotEnabledException, TransitionNotFoundException {
+  public ASTPetriNetTest getAllTestcase(ASTPetrinet petrinet, String fileName) throws TransitionNotEnabledException, TransitionNotFoundException {
 
     ASTPetriNetTest petriNetTest = new ASTPetriNetTest();
 
-    petriNetTest = generateTestcaseTableToPetrinetTest(generateTestcaseTableFromPetriNet(petrinet));
+    petriNetTest = generateTestcaseTableToPetrinetTest(generateTestcaseTableFromPetriNet(petrinet),petrinet,fileName);
 
     return petriNetTest;
   }
@@ -58,67 +58,70 @@ public class Generator{
 
     Map<Map<List<ASTPlace>,List<ASTPlace>>,ASTTransition> testcaseTable = generateTestcaseTable(middleTransition);
     return testcaseTable;
-
-//    List<ASTPlace> startPlacesList = new ArrayList<ASTPlace>(startPlaces);
-//    List<List<ASTPlace>> combinePlaces = combineList(startPlacesList);
-
-//    for (List<ASTPlace> astPlaces : combinePlaces){
-//      if (astPlaces.size()>0){
-//        ASTPetrinet tempPetriNet = initPetrinetInitialMarking(oPetrinet.deepClone());
-//        for (ASTPlace op : astPlaces){
-//          for (ASTPlace p : tempPetriNet.getPlaceList()){
-//            if (p.getName() == op.getName()){
-//              p.setInitial(op.getInitial());
-//            }
-//          }
-//        }
-//        setupPetriNet(tempPetriNet);
-//        Simulator sim = new Simulator(tempPetriNet);
-//        for (ASTTransition t : middleTransition){
-//          try{
-//            sim.simulateTransition(t.getName());
-//          }catch (Exception e){
-//          }
-//        }
-//        List<ASTPlace> reachPlaces = new ArrayList<ASTPlace>(endPlaces);
-//        for (ASTPlace p : reachPlaces){
-//          ASTNatLiteralBuilder astNatLiteralBuilder = new ASTNatLiteralBuilder();
-//          int value = Math.abs(sim.getCurrentMarking().get(p.getName()).compareTo(0));
-//          astNatLiteralBuilder.setDigits(String.valueOf(value));
-//          p.setInitial(astNatLiteralBuilder.build());
-//        }
-//        petrinetMap.put(astPlaces,reachPlaces);
-////        System.out.println(petrinetMap);
-//
-//      }
-//
-//    }
-
   }
 
-  public ASTPetriNetTest generateTestcaseTableToPetrinetTest(Map<Map<List<ASTPlace>,List<ASTPlace>>,ASTTransition> testcaseTable){
+  public ASTPetriNetTest generateTestcaseTableToPetrinetTest(Map<Map<List<ASTPlace>,List<ASTPlace>>,ASTTransition> testcaseTable,ASTPetrinet petrinet,String fileName){
 
-    ASTPetriNetTest finalPetriNetTest = new ASTPetriNetTest();
+    ASTPetriNetTestBuilder testBuilder = PetrinetTestsMill.petriNetTestBuilder()
+            .setName(petrinet.getName() + "_" + "AutoTest")
+            .setImport(PetrinetTestsMill.importBuilder().setName(fileName).build());
 
     testcaseTable.entrySet().forEach(entry->{
-      System.out.println("Transition: "+entry.getValue().getName());
+//      System.out.println("Transition: "+entry.getValue().getName());
+      ASTTestcaseBuilder testcaseBuilder = PetrinetTestsMill.testcaseBuilder().setName(entry.getValue().getName() + "_TransitionTest");
+      ASTTestcaseBodyBuilder testcaseBodyBuilder = PetrinetTestsMill.testcaseBodyBuilder();
+
+      // Simulation
+      ASTSimulation simulation = PetrinetTestsMill.simulationBuilder().addName(entry.getValue().getName()).build();
+
       entry.getKey().entrySet().forEach(e->{
+
+        // Initial Marking
+        ASTDefineMarkingBuilder initMarkingBuilder = PetrinetTestsMill.defineMarkingBuilder();
         for (ASTPlace p : e.getKey()){
-          System.out.println("FromPlace: "+p.getName());
+//          System.out.println("FromPlace: "+p.getName());
+          ASTNatLiteralBuilder astNatLiteralBuilder = new ASTNatLiteralBuilder();
+          astNatLiteralBuilder.setDigits("1");
+          initMarkingBuilder.addPlaceBinding(PetrinetTestsMill.placeBindingBuilder().setPlace(p.getName()).setValue(PetrinetTestsMill.markingValueBuilder().setNatLiteral(astNatLiteralBuilder.build()).build()).build());
+
         }
+        testcaseBodyBuilder.setInitialMarking(PetrinetTestsMill.initialMarkingBuilder().setDefineMarking(initMarkingBuilder.build()).build());
+
+        // Expected Marking
+        ASTMarkingConditionBuilder expectMarkingBuilder = PetrinetTestsMill.markingConditionBuilder();
         for (ASTPlace p_value : e.getValue()){
-          System.out.println("ToPlace: "+p_value.getName());
+//          System.out.println("ToPlace: "+p_value.getName());
+          ASTNatLiteralBuilder astNatLiteralBuilder = new ASTNatLiteralBuilder();
+          astNatLiteralBuilder.setDigits("1");
+          expectMarkingBuilder.addPlaceBinding(PetrinetTestsMill.placeBindingBuilder().setPlace(p_value.getName()).setValue(PetrinetTestsMill.markingValueBuilder().setNatLiteral(astNatLiteralBuilder.build()).build()).build());
         }
+
+        // combining values
+        ASTTestStep testStep = PetrinetTestsMill.testStepBuilder().addSimulation(simulation).addExpectation(PetrinetTestsMill.expectationBuilder().setCondition(expectMarkingBuilder.build()).build()).build();
+        testcaseBodyBuilder.addTestStep(testStep);
+        testcaseBuilder.setTestcaseBody(testcaseBodyBuilder.build());
+        testBuilder.addTestcase(testcaseBuilder.build());
+
       });
-      System.out.println();
-      System.out.println();
+
     });
 
-    return finalPetriNetTest;
+//    testcaseTable.entrySet().forEach(entry->{
+//      System.out.println("Transition: "+entry.getValue().getName());
+//      entry.getKey().entrySet().forEach(e->{
+//        for (ASTPlace p : e.getKey()){
+//          System.out.println("FromPlace: "+p.getName());
+//        }
+//        for (ASTPlace p_value : e.getValue()){
+//          System.out.println("ToPlace: "+p_value.getName());
+//        }
+//      });
+//      System.out.println();
+//      System.out.println();
+//    });
+
+    return testBuilder.build();
   }
-
-
-
 
   public Map<Map<List<ASTPlace>,List<ASTPlace>>,ASTTransition> generateTestcaseTable(Set<ASTTransition> middleTransition){
     Map<Map<List<ASTPlace>,List<ASTPlace>>,ASTTransition> testcaeTable = new HashMap<>();
@@ -151,121 +154,23 @@ public class Generator{
     checker.checkAll(petrinet);
   }
 
-
-  public ASTTestcase getTestcase(List<ASTTransition> transitions,List<ASTPlace> places, ASTPetrinet petrinet, ASTPetriNetTest astPetriNetTest) throws TransitionNotEnabledException, TransitionNotFoundException {
-
-    ASTInheritMarkingBuilder astInheritMarkingBuilder = new ASTInheritMarkingBuilder();
-    astInheritMarkingBuilder.setRestSpecificationAbsent();
-
-    ASTInitialMarkingBuilder astInitialMarkingBuilder = new ASTInitialMarkingBuilder();
-    astInitialMarkingBuilder.setInheritMarking(astInheritMarkingBuilder.build());
-
-    ASTTestcaseBodyBuilder astTestcaseBodyBuilder = new ASTTestcaseBodyBuilder();
-    astTestcaseBodyBuilder.setInitialMarking(astInitialMarkingBuilder.build());
-
-    List<ASTPlaceBinding> placeBindings = new ArrayList<ASTPlaceBinding>();
-
-    for(ASTPlace p : places){
-      ASTMarkingValueBuilder astMarkingValueBuilder = new ASTMarkingValueBuilder();
-      if(!p.isPresentInitial()){
-        ASTNatLiteralBuilder astNatLiteralBuilder = new ASTNatLiteralBuilder();
-        astNatLiteralBuilder.setDigits("0");
-        astMarkingValueBuilder.setNatLiteral(astNatLiteralBuilder.build());
-      }else {
-        astMarkingValueBuilder.setNatLiteral(p.getInitial());
+  public static List<List<ASTPlace>> combineList(List<ASTPlace> list) {
+    List<List<ASTPlace>> result = new ArrayList<List<ASTPlace>>();
+    long n = (long)Math.pow(2,list.size());
+    List<ASTPlace> combine;
+    for (long l=0L; l<n; l++) {
+      combine = new ArrayList<ASTPlace>();
+      for (int i=0; i<list.size(); i++) {
+        if ((l>>>i&1) == 1){
+          ASTNatLiteralBuilder astNatLiteralBuilder = new ASTNatLiteralBuilder();
+          astNatLiteralBuilder.setDigits("1");
+          ASTPlace place = list.get(i);
+          place.setInitial(astNatLiteralBuilder.build());
+          combine.add(place);
+        }
       }
-
-      ASTPlaceBindingBuilder astPlaceBindingBuilder = new ASTPlaceBindingBuilder();
-      astPlaceBindingBuilder.setPlace(p.getName());
-      astPlaceBindingBuilder.setValue(astMarkingValueBuilder.build());
-      placeBindings.add(astPlaceBindingBuilder.build());
+      result.add(combine);
     }
-
-
-    ASTMarkingConditionBuilder astMarkingConditionBuilder = new ASTMarkingConditionBuilder();
-    astMarkingConditionBuilder.setPlaceBindingList(placeBindings);
-
-    ASTConjunctionBuilder astConjunctionBuilder = new ASTConjunctionBuilder();
-    astConjunctionBuilder.addCondition(astMarkingConditionBuilder.build());
-
-    ASTExpectationBuilder astExpectationBuilder = new ASTExpectationBuilder();
-    astExpectationBuilder.setCondition(astConjunctionBuilder.build());
-
-    astTestcaseBodyBuilder.addExpectation(astExpectationBuilder.build());
-
-    List<String> transitionnames = new ArrayList<String>();
-    for(ASTTransition t : transitions){
-      transitionnames.add(t.getName());
-    }
-
-    ASTSimulationBuilder astSimulationBuilder = new ASTSimulationBuilder();
-    astSimulationBuilder.setNameList(transitionnames);
-
-//    --------------------------------------
-
-    Simulator sim = new Simulator(petrinet);
-    ASTTransition lastTran = new ASTTransition();
-    for(ASTTransition t : transitions){
-      lastTran = t;
-      sim.simulateTransition(t.getName());
-    }
-
-//    -------------------------------------
-
-    List<ASTPlaceBinding> placeBindings1 = new ArrayList<ASTPlaceBinding>();
-
-    for(ASTPlace p : lastTran.getToPlaces()){
-      ASTPlaceBindingBuilder astPlaceBindingBuilder = new ASTPlaceBindingBuilder();
-      astPlaceBindingBuilder.setPlace(p.getName());
-      ASTMarkingValueBuilder astMarkingValueBuilder = new ASTMarkingValueBuilder();
-      ASTNatLiteralBuilder astNatLiteralBuilder = new ASTNatLiteralBuilder();
-      astNatLiteralBuilder.setDigits(Integer.toString(Math.abs(sim.getCurrentMarking().get(p.getName()).compareTo(0))));
-      astMarkingValueBuilder.setNatLiteral(astNatLiteralBuilder.build());
-      astPlaceBindingBuilder.setValue(astMarkingValueBuilder.build());
-      placeBindings.add(astPlaceBindingBuilder.build());
-    }
-
-    ASTMarkingConditionBuilder astMarkingConditionBuilder1 = new ASTMarkingConditionBuilder();
-    astMarkingConditionBuilder1.setPlaceBindingList(placeBindings1);
-
-    ASTConjunctionBuilder astConjunctionBuilder1 = new ASTConjunctionBuilder();
-    astConjunctionBuilder1.addCondition(astMarkingConditionBuilder1.build());
-
-    ASTExpectationBuilder astExpectationBuilder1 = new ASTExpectationBuilder();
-    astExpectationBuilder1.setCondition(astConjunctionBuilder1.build());
-
-    ASTTestStepBuilder astTestStepBuilder = new ASTTestStepBuilder();
-    astTestStepBuilder.addSimulation(astSimulationBuilder.build());
-    astTestStepBuilder.addExpectation(astExpectationBuilder1.build());
-
-    astTestcaseBodyBuilder.addTestStep(astTestStepBuilder.build());
-
-    ASTTestcaseBuilder astTestcaseBuilder = new ASTTestcaseBuilder();
-    astTestcaseBuilder.setName("Test 1");
-    astTestcaseBuilder.setTestcaseBody(astTestcaseBodyBuilder.build());
-
-    return astTestcaseBuilder.build();
+    return result;
   }
-
-
-
-//  public static List<List<ASTPlace>> combineList(List<ASTPlace> list) {
-//    List<List<ASTPlace>> result = new ArrayList<List<ASTPlace>>();
-//    long n = (long)Math.pow(2,list.size());
-//    List<ASTPlace> combine;
-//    for (long l=0L; l<n; l++) {
-//      combine = new ArrayList<ASTPlace>();
-//      for (int i=0; i<list.size(); i++) {
-//        if ((l>>>i&1) == 1){
-//          ASTNatLiteralBuilder astNatLiteralBuilder = new ASTNatLiteralBuilder();
-//          astNatLiteralBuilder.setDigits("1");
-//          ASTPlace place = list.get(i);
-//          place.setInitial(astNatLiteralBuilder.build());
-//          combine.add(place);
-//        }
-//      }
-//      result.add(combine);
-//    }
-//    return result;
-//  }
 }
