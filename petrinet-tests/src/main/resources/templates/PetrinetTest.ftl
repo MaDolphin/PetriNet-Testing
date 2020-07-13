@@ -9,10 +9,10 @@ import petrinet._parser.PetrinetParser;
 import petrinet.analysis.Marking;
 import petrinet.analysis.TokenCount;
 import petrinettests.simulator.Simulator;
-import petrinettests.simulator.resolver.PetrinetResolverFactory;
 
 import java.io.IOException;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,7 +22,7 @@ public class ${ast.name} {
     Simulator sim;
 
     @BeforeEach
-    public void prepareSimulator() throws IOException {
+    public void setUp() throws IOException {
         PetrinetParser parser = new PetrinetParser();
         petrinet = PetrinetResolverFactory.getResolver().resolve(parser, ${import}).orElseGet(() -> {
             fail("Model path not found");
@@ -59,14 +59,64 @@ public class ${ast.name} {
         assertDoesNotThrow(() -> sim.simulateTransition(transitionName));
     }
 
-    private void assertMarking(String placeName, int tokenCount) {
-        assertEquals(0, sim.getCurrentMarking().get(placeName).compareTo(tokenCount));
+    private boolean any(boolean... conditions) {
+        List<Boolean> conditionsList = new ArrayList<>();
+        for (boolean c: conditions) {
+            conditionsList.add(c);
+        }
+
+        return conditionsList.stream().anyMatch(b -> b);
+
+    }
+
+    private boolean all(boolean... conditions) {
+        List<Boolean> conditionsList = new ArrayList<>();
+        for (boolean c: conditions) {
+            conditionsList.add(c);
+        }
+
+        return conditionsList.stream().allMatch(b -> b);
+    }
+
+    private boolean checkMarking(String placeName, int tokenCount) {
+        return 0 == sim.getCurrentMarking().get(placeName).compareTo(tokenCount);
+    }
+
+    private boolean checkEnabled(String transitionName) {
+        return sim.getCurrentMarking().enabled(findTransitionByName(transitionName));
+    }
+
+    private ASTTransition findTransitionByName(String name) {
+        return petrinet.getTransitionList().stream().filter(t -> t.getName().equals(name)).findAny().orElseThrow();
     }
 
     private void setTokens(String placeName, int tokenCount) {
         Marking initialMarking = sim.getCurrentMarking();
         TokenCount count = new TokenCount(tokenCount);
         initialMarking.set(placeName, count);
+        sim.setCurrentMarking(initialMarking);
+    }
+
+    private void clearAllTokens() {
+        Marking initialMarking = sim.getCurrentMarking();
+        for (String key : initialMarking.keys()) {
+            TokenCount count = new TokenCount(0);
+            initialMarking.set(key, count);
+        }
+        sim.setCurrentMarking(initialMarking);
+    }
+
+    private void applyRest(int tokenCount) {
+        Marking initialMarking = sim.getCurrentMarking();
+        for (String key : initialMarking.keys()) {
+            TokenCount count = initialMarking.get(key);
+            if (count.compareTo(0) > 0) {
+                continue;
+            }
+
+            count.add(tokenCount);
+            initialMarking.set(key, count);
+        }
         sim.setCurrentMarking(initialMarking);
     }
 }

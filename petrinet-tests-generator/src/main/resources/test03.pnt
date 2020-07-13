@@ -1,24 +1,20 @@
-pntest Test02 {
+pntest Test03 {
     use petrinet CookieMachine_modified
     testcase ATestCase {
-        initial marking {
-            Keksspeicher 4,
-            Einwurfschlitz 1,
-            KeinSignal 1,
-            Strom 1
-        }
+        initial marking inherited
 
-        expect all {
+        expect any {
             marking {
                 Keksspeicher 4,
-                Einwurfschlitz 1
+                Einwurfschlitz 5
             },
-            not enabled {
+            enabled{
                 MuenzeEinwerfen
             }
         }
 
         simulate {
+            MuenzeEinwerfen,
             MuenzeAkzeptieren,
             KeksDruecken,
             KekseAusgeben,
@@ -27,9 +23,8 @@ pntest Test02 {
         }
 
         expect all {
-            marking {
-                Keksspeicher 3,
-                Einwurfschlitz 0
+            not marking {
+                Keksspeicher 5
             }
         }
 
