@@ -69,4 +69,12 @@ public class ${ast.name} {
         initialMarking.set(placeName, count);
         sim.setCurrentMarking(initialMarking);
     }
+
+    private void clearAllTokens() {
+        Marking initialMarking = sim.getCurrentMarking();
+        for (String key : initialMarking.keys()) {
+            initialMarking.set(key, 0);
+        }
+        sim.setCurrentMarking(initialMarking);
+    }
 }
