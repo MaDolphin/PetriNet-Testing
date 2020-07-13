@@ -1,4 +1,4 @@
-package petrinettests.testcasegenerator;
+package petrinettests.generators.defaultgenerators;
 
 import de.monticore.io.paths.ModelPath;
 import de.monticore.literals.mccommonliterals._ast.ASTNatLiteral;
@@ -17,19 +17,23 @@ import petrinettests._visitor.PetrinetTestsVisitor;
 import petrinettests.simulator.Simulator;
 import petrinettests.simulator.TransitionNotEnabledException;
 import petrinettests.simulator.TransitionNotFoundException;
+import petrinettests.testgenerator.TestGenerator;
 
 import javax.annotation.Nonnull;
 import java.util.*;
 
-public class Generator{
+public class CauseEffectGenerator implements TestGenerator {
 
-  public ASTPetriNetTest getAllTestcase(ASTPetrinet petrinet, String fileName) throws TransitionNotEnabledException, TransitionNotFoundException {
+  @Nonnull
+  @Override
+  public String getName() {
+    return "CauseEffect";
+  }
 
-    ASTPetriNetTest petriNetTest = new ASTPetriNetTest();
-
-    petriNetTest = generateTestcaseTableToPetrinetTest(generateTestcaseTableFromPetriNet(petrinet),petrinet,fileName);
-
-    return petriNetTest;
+  @Nonnull
+  @Override
+  public ASTPetriNetTest generate(@Nonnull ASTPetrinet petrinet) {
+    return generateTestcaseTableToPetrinetTest(generateTestcaseTableFromPetriNet(petrinet),petrinet);
   }
 
   public Map<Map<List<ASTPlace>,List<ASTPlace>>,ASTTransition> generateTestcaseTableFromPetriNet(ASTPetrinet oPetrinet) {
@@ -60,11 +64,11 @@ public class Generator{
     return testcaseTable;
   }
 
-  public ASTPetriNetTest generateTestcaseTableToPetrinetTest(Map<Map<List<ASTPlace>,List<ASTPlace>>,ASTTransition> testcaseTable,ASTPetrinet petrinet,String fileName){
+  public ASTPetriNetTest generateTestcaseTableToPetrinetTest(Map<Map<List<ASTPlace>,List<ASTPlace>>,ASTTransition> testcaseTable,ASTPetrinet petrinet){
 
     ASTPetriNetTestBuilder testBuilder = PetrinetTestsMill.petriNetTestBuilder()
             .setName(petrinet.getName() + "_" + "AutoTest")
-            .setImport(PetrinetTestsMill.importBuilder().setName(fileName).build());
+            .setImport(PetrinetTestsMill.importBuilder().setName(petrinet.getName()).build());
 
     testcaseTable.entrySet().forEach(entry->{
 //      System.out.println("Transition: "+entry.getValue().getName());

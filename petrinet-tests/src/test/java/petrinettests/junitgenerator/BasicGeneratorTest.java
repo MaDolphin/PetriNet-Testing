@@ -10,6 +10,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BasicGeneratorTest {
+
+  // TODO assert that the generated junit fulfills expectations
+
   @Test
   public void testBasicSim() throws IOException {
     PetrinetTestsParser parser = new PetrinetTestsParser();

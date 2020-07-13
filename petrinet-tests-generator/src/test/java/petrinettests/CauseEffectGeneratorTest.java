@@ -1,4 +1,4 @@
-package petrinettests.testcasegenerator;
+package petrinettests;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -22,6 +22,7 @@ import petrinet._symboltable.PetrinetLanguage;
 import petrinet._symboltable.PetrinetSymbolTableCreatorDelegator;
 import petrinet.cocos.PetrinetCoCos;
 import petrinettests._ast.ASTPetriNetTest;
+import petrinettests.generators.defaultgenerators.CauseEffectGenerator;
 import petrinettests.prettyprint.PetrinetTestPrettyprinter;
 import petrinettests.simulator.TransitionNotEnabledException;
 import petrinettests.simulator.TransitionNotFoundException;
@@ -30,17 +31,17 @@ import static java.nio.file.StandardOpenOption.APPEND;
 import static java.nio.file.StandardOpenOption.CREATE;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class GeneratorTest {
+public class CauseEffectGeneratorTest {
 
     @Test
     public void testLoadPetrinet() throws IOException, TransitionNotEnabledException, TransitionNotFoundException {
 
-        Generator generator = new Generator();
+        CauseEffectGenerator generator = new CauseEffectGenerator();
         PetrinetParser parser = new PetrinetParser();
         String oFileName = "CookieMachine_modified";
-        Optional<ASTPetrinet> oPetrinet = parser.parse("src/test/resources/testcasegenerator/"+oFileName+".pn");
+        Optional<ASTPetrinet> oPetrinet = parser.parse("src/test/resources/"+oFileName+".pn");
         assertTrue(oPetrinet.isPresent());
-        ASTPetriNetTest petriNetTest = generator.getAllTestcase(oPetrinet.get(),oFileName);
+        ASTPetriNetTest petriNetTest = generator.generate(oPetrinet.get());
         String str = PetrinetTestPrettyprinter.print(petriNetTest);
         System.out.println(str);
 
