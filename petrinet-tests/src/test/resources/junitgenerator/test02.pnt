@@ -4,7 +4,10 @@ pntest Test02 {
         initial marking {
             Keksspeicher 4,
             Einwurfschlitz 0,
-            rest 10
+
+            EinwurfMoeglich 1,
+            KeinSignal 1,
+            Strom 1
         }
 
         expect all {

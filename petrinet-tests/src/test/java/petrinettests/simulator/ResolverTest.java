@@ -25,7 +25,9 @@ public class ResolverTest {
   public void loadsDynamicResolver(){
     assertEquals(PetrinetResolverFactory.DYNAMIC_RESOLVER_PACKAGE, DynamicPetrinetResolver.class.getPackageName());
     assertEquals(PetrinetResolverFactory.DYNAMIC_RESOLVER_CLASSNAME, DynamicPetrinetResolver.class.getSimpleName());
+    DynamicPetrinetResolver.setThrowOnResolve(true);
     assertThrows(DynamicPetrinetResolver.MarkCallException.class, () -> PetrinetResolverFactory.getResolver().resolve(new PetrinetParser(), ""));
+    DynamicPetrinetResolver.setThrowOnResolve(false);
   }
 
   @Test

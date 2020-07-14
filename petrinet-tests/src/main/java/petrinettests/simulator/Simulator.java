@@ -64,7 +64,7 @@ public class Simulator {
    */
   public void simulateTransition(ASTTransition transition) throws TransitionNotEnabledException {
     if (!currentMarking.enabled(transition)) {
-      throw new TransitionNotEnabledException();
+      throw new TransitionNotEnabledException(transition.getName());
     }
 
     // Fire the transition on the ptrinet

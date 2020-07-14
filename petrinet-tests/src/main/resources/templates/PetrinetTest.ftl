@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import petrinet._ast.ASTPetrinet;
+import petrinet._ast.ASTTransition;
 import petrinet._parser.PetrinetParser;
 import petrinet.analysis.Marking;
 import petrinet.analysis.TokenCount;
@@ -12,7 +13,8 @@ import petrinettests.simulator.Simulator;
 import petrinettests.simulator.resolver.PetrinetResolverFactory;
 
 import java.io.IOException;
-import java.util.Optional;
+import java.util.List;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 

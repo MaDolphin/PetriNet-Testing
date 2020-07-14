@@ -10,4 +10,7 @@ public class TransitionNotEnabledException extends Exception {
    */
   private static final long serialVersionUID = 1L;
 
+  public TransitionNotEnabledException(String transitionName) {
+    super(transitionName);
+  }
 }
