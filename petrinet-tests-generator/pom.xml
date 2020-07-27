@@ -4,6 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+<!-- 
+    This Generator automatically creates executable Junit Testcases from Petrinet and PetrinetTest models
+    that are located in src/main/resources
+    
+    This module is only using the implementation in the main module
+
+    The Petrinets the handwritten tests should be performed on also have to be present in src/main/resources
+-->
+
     <properties>
         <!-- .. Libraries ..................................................... -->
         <petrinet4analysis.version>0.0.2-SNAPSHOT</petrinet4analysis.version>
@@ -66,22 +75,36 @@
             <version>1.1</version>
             <executions>
               <execution>
+                <id>generate-handwritten-tests</id>
+                <phase>generate-test-sources</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <mainClass>petrinettests.PetrinetTestsTool</mainClass>
+                  <arguments>
+                      <argument>--generate-handwritten-dir</argument>
+                      <argument>${basedir}/src/main/resources</argument>
+                      <argument>${project.build.directory}/generated-test-sources/petrinettests/petrinettests/generated</argument>
+                  </arguments>
+                </configuration>    
+              </execution>
+              <execution>
                 <id>generate-tests</id>
                 <phase>generate-test-sources</phase>
                 <goals>
                   <goal>java</goal>
                 </goals>
+                <configuration>
+                  <mainClass>petrinettests.PetrinetTestsTool</mainClass>
+                  <arguments>
+                      <argument>--generate-dir</argument>
+                      <argument>${basedir}/src/main/resources</argument>
+                      <argument>${project.build.directory}/generated-test-sources/petrinettests/petrinettests/generated</argument>
+                  </arguments>
+                </configuration>    
               </execution>
             </executions>
-            <configuration>
-              <mainClass>petrinettests.PetrinetTestsTool</mainClass>
-              <arguments>
-                  <!-- TODO: Use pn models and generate tests from them (not pnt models) -->
-                  <argument>--generate-dir</argument>
-                  <argument>${basedir}/src/main/resources</argument>
-                  <argument>${project.build.directory}/generated-test-sources/petrinettests/petrinettests/generated</argument>
-              </arguments>
-            </configuration>
           </plugin>
 
         <!-- Step 2: Mark target/generated-test-sources as test sources -->

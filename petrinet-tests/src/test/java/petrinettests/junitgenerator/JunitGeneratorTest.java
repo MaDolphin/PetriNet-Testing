@@ -9,7 +9,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class BasicGeneratorTest {
+public class JunitGeneratorTest {
   @Test
   public void testBasicSim() throws IOException {
     PetrinetTestsParser parser = new PetrinetTestsParser();

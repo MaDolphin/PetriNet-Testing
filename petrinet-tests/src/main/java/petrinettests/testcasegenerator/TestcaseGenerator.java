@@ -21,9 +21,9 @@ import petrinettests.simulator.TransitionNotFoundException;
 import javax.annotation.Nonnull;
 import java.util.*;
 
-public class Generator{
+public class TestcaseGenerator {
 
-  public ASTPetriNetTest getAllTestcase(ASTPetrinet petrinet, String fileName) throws TransitionNotEnabledException, TransitionNotFoundException {
+  public ASTPetriNetTest getAllTestcases(ASTPetrinet petrinet, String fileName) throws TransitionNotEnabledException, TransitionNotFoundException {
 
     ASTPetriNetTest petriNetTest = new ASTPetriNetTest();
 

@@ -35,17 +35,17 @@ public class GeneratorTest {
     @Test
     public void testLoadPetrinet() throws IOException, TransitionNotEnabledException, TransitionNotFoundException {
 
-        Generator generator = new Generator();
+        TestcaseGenerator generator = new TestcaseGenerator();
         PetrinetParser parser = new PetrinetParser();
         String oFileName = "CookieMachine_modified";
         Optional<ASTPetrinet> oPetrinet = parser.parse("src/test/resources/testcasegenerator/"+oFileName+".pn");
         assertTrue(oPetrinet.isPresent());
-        ASTPetriNetTest petriNetTest = generator.getAllTestcase(oPetrinet.get(),oFileName);
+        ASTPetriNetTest petriNetTest = generator.getAllTestcases(oPetrinet.get(),oFileName);
         String str = PetrinetTestPrettyprinter.print(petriNetTest);
         System.out.println(str);
 
         String fileName = petriNetTest.getName() + ".pnt";
-        String dirName = "src/test/resources/testcasegenerator/" + fileName;
+        String dirName = "out/" + fileName;
 
 //        File dir = new File (dirName);
 //        File actualFile = new File (dir, fileName);
