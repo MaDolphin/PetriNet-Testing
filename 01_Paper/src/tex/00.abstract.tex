@@ -1,0 +1,12 @@
+% TeX root = ../../paper.tex
+
+\begin{abstract}
+
+    Ensuring reliability and security of software to improve the quality becomes an urgent issue. Petri nets are not only a graphical modeling tool but also a formal method with strict grammar and semantic definitions that can be used to model and describe the system effectively at the same time. Therefore model-based testing techniques with petri net can be used to develop tests of systems based on formal criteria to find errors at early stages in development. It is even possible to generate testcases automatically.
+    
+    We define a textual modeling language, \emph{Petrinets Testing}, based on the MontiCore Language Workbench \cite{monticore2020}. Our language is an extension of the \emph{petrinets4analysis} language, which is to analyze the given petri net model. The goal of the \emph{Petrinets Testing} language is to verify the correctness of the given petri net model. Due to the powerful language generation by MontiCore based on a simple context-free grammar, only a small hand-written codebase is needed, enhancing maintainability and extensibility.
+    
+    Our work is to create a modeling DSL (domain specific language) using the Monticore to automate the inspection process for petri nets. Moreover, The test cases used in the \emph{Petrinets Testing} can be generated automatically or set manually. Finally a JUnit class is generated for each petri net that needs to be tested.
+	
+\keywords{Petri net  \and Model-based Testing  \and JUnit}
+\end{abstract}

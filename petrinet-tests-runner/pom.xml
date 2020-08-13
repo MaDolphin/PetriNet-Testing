@@ -31,9 +31,9 @@
         <groupId>de.monticore.lang</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>petrinet-tests-generator</artifactId>
+    <artifactId>petrinet-tests-runner</artifactId>
 
-    <name>PetrinetTests - Testcase Generator</name>
+    <name>PetrinetTests - Testcase Runner</name>
 
     <dependencies>
         <dependency>

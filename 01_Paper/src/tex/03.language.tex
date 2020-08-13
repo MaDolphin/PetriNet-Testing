@@ -1,0 +1,75 @@
+% TeX root = ../../paper.tex
+
+\section{Language}\label{sec:language}
+
+The grammar is the foundation of the \emph{Petrinets Testing} language which is defined on a syntactical level and on a semantic level, both aided by MontiCore generation capabilities.
+
+\subsection{Grammar Design}
+
+The syntactic foundation of the \emph{Petrinets Testing} language is a context-free grammar which defines all valid keywords and permissible input values as well as syntactic sugar (e.g. punctuation and bracketing), and their static arrangement~\cite{rumpe2017monticore}. The grammar of the \emph{Petrinets Testing} language (see Listing \ref{lst:language:grammar}) is defined by the MontiCore Language Workbench, which produces Java classes for the abstract syntax tree (AST) as well as additional infrastructure by our defined keywords and syntactic sugar in the MontiCore Language Workbench. The desired modeling elements are
+
+\begin{itemize}
+    \item Testcase features: orginal petri net, testcase body, testing step, testing expectation
+    \item Testcase body elements: initial markings, inherit markings, define markings, markings with places
+    \item Testing step elements: defined simulation
+    \item Testing expectation elements: place binding with any or all conditional markings
+\end{itemize}
+
+\begin{lstfloat}
+	\centering
+\begin{lstlisting}[style=mcgrammar]
+grammar PetrinetTests extends de.monticore.literals.MCCommonLiterals  {
+
+    symbol scope PetriNetTest = "pntest" Name "{"
+        Import
+        (TestcaseBody | Testcase+)
+    "}";
+
+    symbol Testcase = "testcase" Name "{"
+        TestcaseBody
+    "}";
+
+    Import = "use" "petrinet" Name;
+
+    TestcaseBody = InitialMarking Expectation* TestStep*;
+    TestStep = Simulation+ Expectation+;
+    Simulation = "simulate" "{" (Name || ",")+ "}";
+
+    InitialMarking = "initial" "marking" (InheritMarking | DefineMarking);
+    InheritMarking = "inherited" RestSpecification?;
+    DefineMarking = "{" (PlaceBinding || ",")* ("," RestSpecification)? "}";
+    PlaceBinding = place:Name value:MarkingValue;
+    RestSpecification = "rest" MarkingValue;
+    MarkingValue = NatLiteral;
+
+    Expectation = "expect" Condition;
+    interface Condition;
+    astrule Condition = 
+      method Optional<Boolean> verify(
+        petrinet._ast.ASTPetrinet petrinet, petrinet.analysis.Marking marking) { };
+    interface BooleanCondition extends Condition;
+    Negation implements BooleanCondition = "not" Condition;
+    Conjunction implements BooleanCondition = "all" "{" (Condition || ",")* "}";
+    Disjunction implements BooleanCondition = "any" "{" (Condition || ",")* "}";
+
+    MarkingCondition implements Condition = 
+      "marking" "{" (PlaceBinding || ",")* "}";
+    EnabledCondition implements Condition = 
+      "enabled" "{" (Name || ",")* "}";
+}
+\end{lstlisting}
+	\caption{The \emph{Petrinets Testing} MontiCore grammar}\label{lst:language:grammar}
+\end{lstfloat}
+
+
+The \textbf{PetriNetTest} grammar defines the structure of the \emph{Petrinets Testing} language. Firstly, the grammar should know which petri net needs to be tested, so we define \textbf{Import}, which is to import the original petri net model that needs to be tested, which is parsed by the \emph{petrinets4analysis} language\cite{Hein}. The following part is about the all testcases of the original petri net model. The \textbf{PetriNetTest} grammar can contain one and more than one one-terminal \textbf{Testcase}. In each testcase body, we can define the \textbf{InitialMarking} of the petri net that needs to be tested. If we want to use the initial markings from the original petri net model, we can use the \textbf{InheritMarking} to inherit the original markings. Moreover, we can also make modifications to the inherited markings. If we want to define the new initial markings, we can use \textbf{DefineMarking} non-terminals to define the initial markings we need, which can be specified in their corresponding places.
+
+In the testing step part, we can use \textbf{Simulation} non-terminals to specify which transitions are required for the \emph{Petrinets Testing} language model to simulate, where the order of the transitions affects the final testing expectation.
+
+In the testing expectation part, we can use \textbf{Expectation} to define the expected markings model will reach, which can be specified in their corresponding places. In order to realize the conditional expected markings, we define \textbf{BooleanCondition} interface utilizing MontiCore through an \textbf{astrule} \textbf{Condition} for the \textbf{Expectation} non-terminal. At this point we can define various combinations of expected markings with "all" and "any" keywords.
+
+\subsection{Well-formedness of Models}\label{sec:lang:semantics}
+
+The grammar ensures syntactic correctness of the \emph{Petrinets Testing} model definitions, but additionally, models must be well-formed. Context conditions (CoCos) in MontiCore are used to verify the semantic correctness of the \emph{Petrinets Testing} model. A context condition is a predicate on a context-free grammar correct sentence where the context of a word is used to determine the total correctness, also called well-formedness\cite{rumpe2017monticore}. 
+
+The \emph{Petrinets Testing} language uses the \emph{petrinets4analysis} language to parse the petri net model, and the \emph{Petrinets Testing} language will simulate the petri net with the defined initial markings and transitions, so a place that appears in the \emph{Petrinets Testing} model must exist in the petri net model in the \emph{petrinets4analysis} language. In addition, all transitions in the \emph{Petrinets Testing} model must also exist in the petri net model in the \emph{petrinets4analysis} language.

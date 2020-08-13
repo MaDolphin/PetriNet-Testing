@@ -10,7 +10,7 @@
     <modules>
         <module>petrinet4analysis</module>
         <module>petrinet-tests</module>
-        <module>petrinet-tests-generator</module>
+        <module>petrinet-tests-runner</module>
     </modules>
 
     <properties>
@@ -103,38 +103,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!--TODO: Assembly with full jar-->
-            <!-- <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>${assembly.plugin}</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>petrinettest.PetrinetTestsTool</mainClass>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-                <executions>
-                    <execution>
-                        <configuration>
-                            <formats>
-                                <format>jar</format>
-                            </formats>
-                            <descriptor>src/main/assemblies/${project.artifactId}-assembly.xml</descriptor>
-                        </configuration>
-                        <id>${project.artifactId}-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions> 
-            </plugin> -->
         </plugins>
 
     </build>

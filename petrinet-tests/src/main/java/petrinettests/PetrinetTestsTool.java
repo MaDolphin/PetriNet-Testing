@@ -42,7 +42,7 @@ public class PetrinetTestsTool {
         }
 
         if (args[0].equals("--help")) {
-            System.out.println("java -jar petrinets.jar <command>");
+            System.out.println("java -jar petrinet-tests.jar <command>");
             System.out.println("    <command>: argument, or test to run");
             System.out.println("        arguments:");
             System.out.println("            --debug (default), --no-debug");

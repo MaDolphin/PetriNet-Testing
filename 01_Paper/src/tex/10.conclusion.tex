@@ -1,0 +1,16 @@
+% TeX root = ../../paper.tex
+
+\section{Conclusion}
+
+Petri nets provide a versatile tool for modeling processes.
+We further extended the petri net description language \emph{petrinets4analysis} to comply to the current version of the MontiCore  Language Workbench and on that basis developed a specific language, \emph{Petrinets Testing} to model test cases on such petri nets.
+In addition we added capabilities for automated test case generation and provided an implementation for a generator utilizing cause effect nets.
+
+The \emph{Petrinets Testing} language offers a simple and concise yet powerful way of specifying deterministic test cases. Each of which is tested by simulating the referenced petrinet by firing the specified transitions in the correct order and asserting that the defined properties hold.
+By only focusing on necessary language constructs this enables others to create handwritten tests in order to check specific properties on a petrinet.
+
+With the provided petri net simulation-interfaces we enable future developers to plug in their own implementations to be simulated as described in the test cases. Together with interfaces for automatic test case generators this creates an extensible framework which can be used to automatically apply the desired tests on the actual processes, modelled by the petri net.
+
+The MontiCore Language Workbench \cite{rumpe2017monticore} played a major role in developing this framework.
+It enabled us to focus on language design and tool-functionality by automatically generating all necessary steps to parse, verify and transform a language. Only a minimal additional codebase was needed to connect the two languages to work in unison.
+Leveraging these capabilities, other developers will also benefit from the consistent and easy to understand interface , which in turn further adds to the extensibility of the overall framework.
