@@ -18,7 +18,7 @@
         <petrinet4analysis.version>0.0.2-SNAPSHOT</petrinet4analysis.version>
         <monticore.version>6.1.0</monticore.version>
         <antlr.version>4.7.1</antlr.version>
-        <logback.version>1.2.3</logback.version>
+        <logback.version>1.2.13</logback.version>
 
         <!-- .. Classifiers ................................................... -->
         <grammars.classifier>grammars</grammars.classifier>
